@@ -37,3 +37,6 @@ This pipeline automates the process of collecting reviews, processing them with 
 - Ensure all API keys and sensitive credentials are stored securely and not hard-coded in the scripts.
 - The pipeline requires configuration of Azure Blob Storage triggers for automation.
 - Monitor the Azure Function App logs for errors or issues during processing.
+
+
+![image](https://github.com/Zeeshan-Muhimma/SerpApi/assets/146631977/e76bcb4c-7364-4773-90a9-8bdab9b618aa)
