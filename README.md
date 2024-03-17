@@ -7,17 +7,18 @@ This pipeline automates the process of collecting reviews, processing them with 
 
 ## Components
 
-1. **Collector (`App.py`)**: An application running on AWS EC2 that collects reviews from various sources (e.g., Google Maps via SerpAPI) and stores them in an Azure Blob Storage container named `reviews`.
+1. **Collector (`App.py`)**: An python script running on AWS EC2 that collects reviews from various sources (e.g., Google Maps via SerpAPI) and stores them in an Azure Blob Storage container named `reviews`.
 
-2. **Processor (`function_app.py`)**: An Azure Function triggered by the arrival of new data in the `reviews` blob. It processes the data by using GPT to add additional columns (`cat` and `keywords`) and stores the enriched data in another blob container named `gpt-reviews`.
+2. **Processor (`Gpt-Cat-key.py`)**: A python script running on AWS EC2 fetches the new data in the `reviews` blob. It processes the data by using GPT to add additional columns (`cat` and `keywords`) and stores the enriched data in another blob container named `gpt-reviews`.
 
-3. **Preprocessor and Azure Table Inserter (`function_app.py`)**: Another Azure Function that triggers on data arrival in `gpt-reviews`. It preprocesses the file further if necessary and inserts the final data into a database table for permanent storage and query support.
+3. **Preprocessor and Azure Table Inserter (`Api_Clean.py`)**: A Azure Function that triggers on data arrival in `gpt-reviews`. It preprocesses the file further if necessary and inserts the final data into a database table for permanent storage and query support.
+4. **Word Tokenizer and Cleaner (`WordCount.py`)**:A Azure Function that triggers on data arrival in `gpt-reviews`. It preprocesses the Snippet Column and and inserts the final data into a database table for permanent storage and query support.
 
 ## Setup and Execution
 
 ### AWS EC2 Setup
 
-1. Deployed `App.py` to an AWS EC2 instance.
+1. Deployed `App.py` and `Gpt-Cat-key.py` to an AWS EC2 instance.
 2. Ensure Python 3.x and necessary libraries (`pandas`, `azure-storage-blob`, `serpapi`, etc.) are installed.
 3. Configure the SerpAPI key and Azure Blob Storage credentials in the script.
 
@@ -28,7 +29,7 @@ This pipeline automates the process of collecting reviews, processing them with 
 
 ### Azure Function App
 
-1. Deploy `function_app.py` to an Azure Function Apps.
+1. Deploy `function_app.py` nd to an Azure Function Apps.
 2. Configure the Function App to trigger on blob creation events in `reviews` and `gpt-reviews` blobs.
 3. Ensure the Function App has access to Azure Blob Storage and any other necessary resources (e.g., Azure Table Storage for intermediate data storage).
 
